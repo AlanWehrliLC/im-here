@@ -1,25 +1,11 @@
-import { Text, View, StatusBar, StyleSheet } from "react-native";
+import { StatusBar } from "react-native";
+import { Home } from "./src/screens/Home";
 
 export default function App(){
   return (
     <>
       <StatusBar />
-      <View style={styles.container}>
-        <Text style={styles.textTitle}>Hello World</Text>
-      </View>
+      <Home />
     </>
   )
 }
-
-const styles = StyleSheet.create({
-  container:{
-    flex: 1,
-    alignItems: "center",
-    justifyContent: "center",
-    backgroundColor: "#131016",
-  },
-  textTitle: {
-    color: "#FDFCFE",
-    fontSize: 25,
-  },
-})
