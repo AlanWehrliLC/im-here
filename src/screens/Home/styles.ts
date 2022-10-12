@@ -11,7 +11,7 @@ export const styles = StyleSheet.create({
       color: "#FDFCFE",
       fontSize: 25,
       fontWeight: "bold",
-      marginTop: 44,
+      paddingTop: 42,
     },
     eventDate: {
       color: "#6B6B6B",
@@ -20,8 +20,8 @@ export const styles = StyleSheet.create({
     form:{
         width: "100%",
         flexDirection: "row",
-        marginTop: 34,
-        marginBottom: 44,
+        paddingTop: 34,
+        paddingBottom: 44
     },
     input: {
         flex: 1,
@@ -46,4 +46,9 @@ export const styles = StyleSheet.create({
         fontSize: 24,
 
     },
+    participants: {
+      color: "#FDFCFE",
+      fontSize: 24,
+      marginBottom: 16,
+    }
   })
