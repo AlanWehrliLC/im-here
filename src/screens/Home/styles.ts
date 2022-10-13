@@ -11,7 +11,7 @@ export const styles = StyleSheet.create({
       color: "#FDFCFE",
       fontSize: 25,
       fontWeight: "bold",
-      paddingTop: 42,
+      paddingTop: 75,
     },
     eventDate: {
       color: "#6B6B6B",
@@ -50,5 +50,10 @@ export const styles = StyleSheet.create({
       color: "#FDFCFE",
       fontSize: 24,
       marginBottom: 16,
+    },
+    listEmptyText: {
+      color: "#FDFCFE",
+      fontSize: 14,
+      textAlign: "center"
     }
   })
