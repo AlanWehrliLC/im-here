@@ -13,19 +13,21 @@ interface ParticipantProp {
 
 
 export function Home(){
-    const [participants, setParticipants] = useState<ParticipantProp[]>([
-        {
-            id: uuidV4(),
-            name: "Alan Wehrli"
-        }
-    ])
+    const [participantName, setParticipantName] = useState("")
+    const [participants, setParticipants] = useState<ParticipantProp[]>([])
 
     function handleParticipantAdd(){
-
+        const newParticipant = {
+            id: uuidV4(),
+            name: participantName
+        }
+        setParticipants(oldState => [...oldState, newParticipant])
+        setParticipantName("")
     }
 
     function removeParticipantFromStatus(id: string){
-        const nonDeletedParticipants = participants.filter((participant)=>{participant.id !== id})
+        const nonDeletedParticipants = participants.filter(participant => participant.id !== id)
+
         setParticipants(nonDeletedParticipants)
     }
 
@@ -58,6 +60,8 @@ export function Home(){
                     style={styles.input}
                     placeholder="Participant name"
                     placeholderTextColor="#6B6B6B"
+                    onChangeText={setParticipantName}
+                    value={participantName}
                 />
 
                 <TouchableOpacity 
