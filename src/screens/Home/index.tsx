@@ -1,10 +1,14 @@
 import 'react-native-get-random-values'
 import {v4 as uuidV4} from "uuid"
 
-import {useState} from "react"
+import {useEffect, useState} from "react"
 import { View, Text, TextInput, TouchableOpacity, FlatList, Alert } from "react-native";
 import { Participant } from "../../components/Participant";
 import {styles} from "./styles";
+import { participantsGetAll } from '../../storage/participants/participantGetAll';
+import { participantsCreate } from '../../storage/participants/participantCreate';
+import { AppError } from '../../utils/AppError';
+import { participantRemoveByName } from '../../storage/participants/participantRemoveByID';
 
 interface ParticipantProp {
     id: string
@@ -16,25 +20,57 @@ export function Home(){
     const [participantName, setParticipantName] = useState("")
     const [participants, setParticipants] = useState<ParticipantProp[]>([])
 
-    function handleParticipantAdd(){
+    async function fetchParticipants(){
+        try {
+          const data = await participantsGetAll()
+          setParticipants(data)
+        } catch (error) {
+          Alert.alert("Classes", "Could not load classes!")
+        }
+      }
+
+    async function handleParticipantAdd(){
         const newParticipant = {
             id: uuidV4(),
             name: participantName
         }
-        setParticipants(oldState => [...oldState, newParticipant])
+
+        try {
+            if (newParticipant.name.trim().length === 0) {
+                return Alert.alert("New Participant", "Enter the participant name!")
+            }
+
+            await participantsCreate(newParticipant)
+        } catch (error) {
+            if (error instanceof AppError) {
+                Alert.alert("New Participant", error.message)
+            }else{
+                Alert.alert("New Participant", "Could not create a new participant!")
+                console.log(error)
+            }
+        } finally {
+            fetchParticipants()
+        }
+
         setParticipantName("")
     }
 
-    function removeParticipantFromStatus(id: string){
-        const nonDeletedParticipants = participants.filter(participant => participant.id !== id)
+    async function removeParticipantFromStatus(id: string){
 
-        setParticipants(nonDeletedParticipants)
+        try {
+            await participantRemoveByName(id)
+        } catch (error) {
+            Alert.alert("Remove group", "Unable to remove group!")
+        } finally {
+            fetchParticipants()
+        }
+
     }
 
     function handleParticipantRemove({id, name}: ParticipantProp){
         Alert.alert("Participating remover", `Do you want to remove the participant ${name}?`, [
             {
-                text: "Yea",
+                text: "Yes",
                 onPress: ()=>{removeParticipantFromStatus(id)}
             },
             {
@@ -43,6 +79,11 @@ export function Home(){
             }
         ])
     }
+
+    useEffect(()=>{
+        fetchParticipants()
+    },[])
+
     return (
         <View style={styles.container}>
             <Text 
