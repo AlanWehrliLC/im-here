@@ -9,6 +9,9 @@ import { participantsGetAll } from '../../storage/participants/participantGetAll
 import { participantsCreate } from '../../storage/participants/participantCreate';
 import { AppError } from '../../utils/AppError';
 import { participantRemoveByName } from '../../storage/participants/participantRemoveByID';
+import { EventNameEdit } from '../../components/EventNameEdit';
+import { eventNameEditGet } from '../../storage/eventNameEdit/eventNameEditGet';
+import { eventNameEditCreate } from '../../storage/eventNameEdit/eventNameEditCreate';
 
 interface ParticipantProp {
     id: string
@@ -17,6 +20,8 @@ interface ParticipantProp {
 
 
 export function Home(){
+    const [eventNameEdit, setEventNameEdit] = useState(true)
+    const [eventName, setEventName] = useState("")
     const [participantName, setParticipantName] = useState("")
     const [participants, setParticipants] = useState<ParticipantProp[]>([])
 
@@ -26,6 +31,15 @@ export function Home(){
           setParticipants(data)
         } catch (error) {
           Alert.alert("Classes", "Could not load classes!")
+        }
+      }
+
+      async function fetchEventName(){
+        try {
+          const data = await eventNameEditGet()
+          setEventName(data)
+        } catch (error) {
+          Alert.alert("Event Name Edit", "Could not load name event!")
         }
       }
 
@@ -80,17 +94,40 @@ export function Home(){
         ])
     }
 
+    async function handleEventName(){
+        try {
+            if (eventName.trim().length === 0) {
+                return Alert.alert("New Participant", "Enter the participant name!")
+            }
+
+            await eventNameEditCreate(eventName)
+        } catch (error) {
+            Alert.alert("Event Name Edit", "Could not create a new name event!")
+        } finally {
+            fetchEventName()
+        }
+    }
+
+    function handleEventNameEdit(eventState: boolean) {
+        if (eventState) {
+            handleEventName()
+        }
+        setEventNameEdit(eventState)
+    }
+
     useEffect(()=>{
         fetchParticipants()
+        fetchEventName()
     },[])
 
     return (
         <View style={styles.container}>
-            <Text 
-                style={styles.eventName}
-            >
-                Event name
-            </Text>
+            <EventNameEdit 
+                eventName={eventName}
+                eventNameEdit={eventNameEdit}
+                handleEventNameEdit={handleEventNameEdit}
+                onChangeText={setEventName}
+            />
 
             <Text style={styles.eventDate}>
                 Friday, November 4, 2022.
