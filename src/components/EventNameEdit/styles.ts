@@ -34,4 +34,9 @@ export const styles = StyleSheet.create({
       alignItems: "center",
       justifyContent: "center",
   },
+  edit: {
+    color: "#FDFCFE",
+    fontSize: 24,
+    fontWeight: "bold"
+  }
 })

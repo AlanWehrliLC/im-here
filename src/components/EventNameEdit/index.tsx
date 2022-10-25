@@ -24,7 +24,7 @@ export function EventNameEdit({eventNameEdit, eventName, handleEventNameEdit, ..
                         onPress={()=>(handleEventNameEdit(false))}
                         {...rest}
                     >
-                        <Text>
+                        <Text style={styles.edit}>
                             Edit
                         </Text>
                     </TouchableOpacity>
