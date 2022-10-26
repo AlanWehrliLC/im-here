@@ -129,9 +129,9 @@ export function Home(){
                 onChangeText={setEventName}
             />
 
-            <Text style={styles.eventDate}>
+            {/* <Text style={styles.eventDate}>
                 Friday, November 4, 2022.
-            </Text>
+            </Text> */}
 
             <View style={styles.form}>
                 <TextInput 
