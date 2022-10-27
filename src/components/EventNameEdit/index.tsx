@@ -35,7 +35,7 @@ export function EventNameEdit({eventNameEdit, eventName, handleEventNameEdit, ..
                 <View style={styles.form}>
                     <TextInput 
                         style={styles.input}
-                        placeholder="Participant name"
+                        placeholder="Event name"
                         placeholderTextColor="#6B6B6B"
                         {...rest}
                     />
